@@ -13,9 +13,9 @@ dotenv.config({ path: pathJoin })
 const URI = (process.env.environment === "staging") ? process.env.DEVELOPMENT_MONGO_UTI :
     process.env.PRODUCTION_MONGO_URI;
 
-export const connect = async () => {
+export const connect = () => {
     try {
-        await mongoose.connect(URI);
+        mongoose.connect(URI);
         console.log("conected database");
     } catch (error) {
         console.log(error.message);

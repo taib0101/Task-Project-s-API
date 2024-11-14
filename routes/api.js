@@ -1,10 +1,14 @@
 // import module or file
 import express from "express";
-import userLocalModel from "../app/models/userLocal.js";
 import bcrypt from "bcrypt";
 import path from "path";
 import url from "url";
 import dotenv from "dotenv";
+import crypto, { randomBytes } from "crypto";
+import userLocalModel from "../app/models/userLocal.js";
+import userGlobalModel from "../app/models/userGlobal.js";
+import { readCollection } from "../app/utility/readUserCollections.js";
+
 
 // config dotenv file
 const __filename = url.fileURLToPath(import.meta.url);
@@ -27,8 +31,21 @@ router.post("/login", (req, res) => {
 router.post("/signup", async (req, res) => {
     try {
         req.body.password = await bcrypt.hash(req.body.password, parseInt(process.env.SALTROUNDS));
-        const data = await new userLocalModel(req.body);
-        await data.save();
+        const data1 = await new userLocalModel(req.body);
+
+        const uniqueId = await randomBytes(parseInt(process.env.UNIQUEIDBYTES)).toString("hex");
+        const data2 = await new userGlobalModel({
+            uniqueId,
+            username: req.body.username,
+            tokenId: "",
+            expireTime: "",
+            issuedAt: ""
+        });
+
+        await data1.save();
+        await data2.save();
+
+        await readCollection();
         res.status(200).send("inserted successfully");
     } catch (error) {
         console.log(error);
