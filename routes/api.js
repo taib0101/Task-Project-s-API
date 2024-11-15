@@ -50,7 +50,7 @@ router.post("/signup", async (req, res) => {
         return res.status(200).send("inserted successfully");
     } catch (error) {
         const string = error.message.split(" ");
-        if(string.includes("duplicate"))
+        if (string.includes("duplicate"))
             return res.status(404).send("give unique user name");
         return res.status(500).send(error.message);
     }
@@ -63,7 +63,6 @@ router.use((req, res, next) => {
 
 // other error
 router.use((err, req, res, next) => {
-    console.log(err.message);
     if (err.message) {
         res.status(500).send(err.message);
     } else {
