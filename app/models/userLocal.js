@@ -4,6 +4,7 @@ const schema = new mongoose.Schema({
     username: {
         type: String,
         required: [true, "username not input"],
+        unique: true,
         trim: true
     },
 

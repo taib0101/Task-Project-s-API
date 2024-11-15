@@ -5,8 +5,8 @@ import userGlobalModel from "../models/userGlobal.js";
 const map = new Map();
 
 // read user Local and Global Collection
-export const exportReadCollection = () => {
-    console.log(map);
+export const returnReadCollection = () => {
+    // console.log(map);
     return map;
 }
 
@@ -19,6 +19,6 @@ export const readCollection = async () => {
         map.set(arrayLocalModel[index]._id.toString(), arrayGlobalModel[index].uniqueId);
     });
 
-    const returnedMap = exportReadCollection();
+    const returnedMap = returnReadCollection();
 }
 

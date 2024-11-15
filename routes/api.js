@@ -8,12 +8,13 @@ import { uniqueIdFunction } from "../app/utility/generateUniqueId.js";
 import userLocalModel from "../app/models/userLocal.js";
 import userGlobalModel from "../app/models/userGlobal.js";
 import { readCollection } from "../app/utility/readUserCollections.js";
+import { authMiddleware } from "../app/middlewares/authMiddleware.js";
+import { currentDirname } from "../app/utility/dirname.js";
+import { hashFunction } from "../app/utility/bcrypt.js";
 
 
 // config dotenv file
-const __filename = url.fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const pathJoin = path.join(__dirname, "../app/config/.env");
+const pathJoin = path.join(currentDirname(import.meta.url), "../app/config/.env");
 dotenv.config({ path: pathJoin });
 
 // define router
@@ -23,14 +24,14 @@ const router = express.Router();
 router.use(express.json());
 
 // log in
-router.post("/login", (req, res) => {
-
+router.post("/login", authMiddleware, (req, res) => {
+    res.status(200).send("Welcome")
 });
 
 // sign up
 router.post("/signup", async (req, res) => {
     try {
-        req.body.password = await bcrypt.hash(req.body.password, parseInt(process.env.SALTROUNDS));
+        req.body.password = await hashFunction(req.body.password);
         const data1 = await new userLocalModel(req.body);
 
         const uniqueId = uniqueIdFunction();
@@ -46,10 +47,12 @@ router.post("/signup", async (req, res) => {
         await data2.save();
 
         await readCollection();
-        res.status(200).send("inserted successfully");
+        return res.status(200).send("inserted successfully");
     } catch (error) {
-        console.log(error);
-        res.status(500).send(error.message);
+        const string = error.message.split(" ");
+        if(string.includes("duplicate"))
+            return res.status(404).send("give unique user name");
+        return res.status(500).send(error.message);
     }
 });
 

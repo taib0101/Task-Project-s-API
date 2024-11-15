@@ -18,6 +18,7 @@ app.use("/taskProject", router);
 const port = (process.env.environment === "staging") ? process.env.PORT_DEVELOPMENT : process.env.PORT_PRODUCTION;
 
 // connect database
+console.log("app.js");
 connect();
 
 // read user Local and GLobal COllection
