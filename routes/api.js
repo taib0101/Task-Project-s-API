@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import path from "path";
 import url from "url";
 import dotenv from "dotenv";
-import crypto, { randomBytes } from "crypto";
+import { uniqueIdFunction } from "../app/utility/generateUniqueId.js";
 import userLocalModel from "../app/models/userLocal.js";
 import userGlobalModel from "../app/models/userGlobal.js";
 import { readCollection } from "../app/utility/readUserCollections.js";
@@ -33,7 +33,7 @@ router.post("/signup", async (req, res) => {
         req.body.password = await bcrypt.hash(req.body.password, parseInt(process.env.SALTROUNDS));
         const data1 = await new userLocalModel(req.body);
 
-        const uniqueId = await randomBytes(parseInt(process.env.UNIQUEIDBYTES)).toString("hex");
+        const uniqueId = uniqueIdFunction();
         const data2 = await new userGlobalModel({
             uniqueId,
             username: req.body.username,
