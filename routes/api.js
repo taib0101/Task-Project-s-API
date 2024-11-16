@@ -1,5 +1,5 @@
 // import module or file
-import express from "express";
+import express, { response } from "express";
 import bcrypt from "bcrypt";
 import path from "path";
 import url from "url";
@@ -11,7 +11,7 @@ import { readCollection } from "../app/utility/readUserCollections.js";
 import { authMiddleware } from "../app/middlewares/authMiddleware.js";
 import { currentDirname } from "../app/utility/dirname.js";
 import { hashFunction } from "../app/utility/bcrypt.js";
-
+import { createToken } from "../app/controllers/tokenController.js";
 
 // config dotenv file
 const pathJoin = path.join(currentDirname(import.meta.url), "../app/config/.env");
@@ -25,7 +25,14 @@ router.use(express.json());
 
 // log in
 router.post("/login", authMiddleware, (req, res) => {
-    res.status(200).send("Welcome")
+    console.log("req.body.username :", req.body.username);
+    createToken(req.body.username, (responseData) => {
+        return res.status(200).json({
+            title: "ok",
+            message: "everything is alright",
+            information: responseData
+        });
+    });
 });
 
 // sign up

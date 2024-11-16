@@ -6,7 +6,7 @@ const map = new Map();
 
 // read user Local and Global Collection
 export const returnReadCollection = () => {
-    // console.log(map);
+    console.log(map);
     return map;
 }
 
