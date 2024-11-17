@@ -9,6 +9,7 @@ const schema = new mongoose.Schema({
 
     username: {
         type: String,
+        unique: [true, "take another value"],
         required: [true, "username not input"],
         trim: true
     },

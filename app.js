@@ -2,8 +2,8 @@
 import express from "express";
 import dotenv from "dotenv";
 import { connect } from "./app/models/connect.js";
-import { readCollection } from "./app/utility/readUserCollections.js";
 import router from "./routes/api.js"
+// import { readCollection } from "./app/utility/readUserCollections.js";
 
 // configure environment file
 dotenv.config({ path: "./app/config/.env" });
@@ -22,7 +22,7 @@ console.log("app.js");
 connect();
 
 // read user Local and GLobal COllection
-readCollection();
+// readCollection();
 
 // listen port
 app.listen(port, () => {

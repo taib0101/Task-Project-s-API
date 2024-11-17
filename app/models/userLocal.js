@@ -4,7 +4,7 @@ const schema = new mongoose.Schema({
     username: {
         type: String,
         required: [true, "username not input"],
-        unique: true,
+        unique: [true, "take another value"],
         trim: true
     },
 

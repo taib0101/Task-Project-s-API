@@ -7,11 +7,11 @@ import dotenv from "dotenv";
 import { uniqueIdFunction } from "../app/utility/generateUniqueId.js";
 import userLocalModel from "../app/models/userLocal.js";
 import userGlobalModel from "../app/models/userGlobal.js";
-import { readCollection } from "../app/utility/readUserCollections.js";
 import { authMiddleware } from "../app/middlewares/authMiddleware.js";
 import { currentDirname } from "../app/utility/dirname.js";
 import { hashFunction } from "../app/utility/bcrypt.js";
 import { createToken } from "../app/controllers/tokenController.js";
+// import { readCollection } from "../app/utility/readUserCollections.js";
 
 // config dotenv file
 const pathJoin = path.join(currentDirname(import.meta.url), "../app/config/.env");
@@ -53,7 +53,7 @@ router.post("/signup", async (req, res) => {
         await data1.save();
         await data2.save();
 
-        await readCollection();
+        // await readCollection();
         return res.status(200).send("inserted successfully");
     } catch (error) {
         const string = error.message.split(" ");
@@ -61,6 +61,11 @@ router.post("/signup", async (req, res) => {
             return res.status(404).send("give unique user name");
         return res.status(500).send(error.message);
     }
+});
+
+router.get("/:id/addTask", (req, res) => {
+    console.log(req.params.id);
+    res.status(200).send(req.params.id);
 });
 
 // 404 error

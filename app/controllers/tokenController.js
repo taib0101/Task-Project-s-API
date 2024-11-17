@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 export const createToken = async (username, callback) => {
     const data = await userGlobal.findOneAndUpdate({ username }, { $set: { username } });
 
-    console.log("before :", data);
+    // console.log("before :", data);
     const generatedToken = await generateToken({
         username: data.username,
         uniqueId: data.uniqueId
