@@ -11,6 +11,8 @@ import { authMiddleware } from "../app/middlewares/authMiddleware.js";
 import { currentDirname } from "../app/utility/dirname.js";
 import { hashFunction } from "../app/utility/bcrypt.js";
 import { createToken } from "../app/controllers/tokenController.js";
+import { tokenExpireTime } from "../app/middlewares/tokenMiddleware.js";
+
 // import { readCollection } from "../app/utility/readUserCollections.js";
 
 // config dotenv file
@@ -24,15 +26,9 @@ const router = express.Router();
 router.use(express.json());
 
 // log in
-router.post("/login", authMiddleware, (req, res) => {
-    console.log("req.body.username :", req.body.username);
-    createToken(req.body.username, (responseData) => {
-        return res.status(200).json({
-            title: "ok",
-            message: "everything is alright",
-            information: responseData
-        });
-    });
+router.post("/login", authMiddleware, async (req, res) => {
+    const createdToken = await createToken(req.body.username);
+    return res.status(200).json(createdToken);
 });
 
 // sign up
@@ -63,9 +59,8 @@ router.post("/signup", async (req, res) => {
     }
 });
 
-router.get("/:id/addTask", (req, res) => {
-    console.log(req.params.id);
-    res.status(200).send(req.params.id);
+router.get("/:id/addTask", tokenExpireTime, (req, res) => {
+    res.status(200).send("enjoy the app");
 });
 
 // 404 error
