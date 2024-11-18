@@ -11,18 +11,21 @@ dotenv.config({ path: "./app/config/.env" });
 // define app
 const app = express();
 
+app.set("case sensitive routing", true);
+
+// connect database
+connect();
+
 // default middleware
-app.use("/taskProject", router);
+app.use("/TaskProject", router);
+
+// 404 error handle
+app.use((req, res, next) => {
+    return res.status(404).send("Not Found");
+});
 
 // select port
 const port = (process.env.environment === "staging") ? process.env.PORT_DEVELOPMENT : process.env.PORT_PRODUCTION;
-
-// connect database
-console.log("app.js");
-connect();
-
-// read user Local and GLobal COllection
-// readCollection();
 
 // listen port
 app.listen(port, () => {

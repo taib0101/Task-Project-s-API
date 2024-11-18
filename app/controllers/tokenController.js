@@ -1,38 +1,74 @@
-import userGlobal from "../models/userGlobal.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import url from "url";
 import path from "path";
 import { currentDirname } from "../utility/dirname.js";
+import userLocal from "../models/userLocal.js"
 
 const pathJoin = path.join(currentDirname(import.meta.url), "../config/.env");
 
 dotenv.config({ path: pathJoin });
 
-export const createToken = async (username) => {
+export const createToken = async (reqBody) => {
     try {
-        // update userGlobal Collection
-        const data = await userGlobal.findOneAndUpdate({ username }, { $set: { username } });
+        let { email, password } = reqBody;
+
+        // update userLocal Collection
+        const data = await userLocal.findOne({ email });
+
+        console.log(data);
 
         const payload = {
-            username: data.username,
-            uniqueId: data.uniqueId,
-            expireTime: new Date(Date.now() + (1000 * 60)).toLocaleString("en-US", { timeZone: "Asia/Dhaka" }),
-            issuedAt: new Date(Date.now()).toLocaleString("en-US", { timeZone: "Asia/Dhaka" })
+            _id: data._id,
+            email: data.email,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            mobile: data.mobile,
+            createdDate: data.createdDate
         };
+
         const generateToken = await jwt.sign(payload, process.env.PRIVATE_KEY, { algorithm: "RS512" });
 
-        data.tokenId = generateToken;
-        data.expireTime = payload.expireTime;
-        data.issuedAt = payload.issuedAt;
-        await data.save();
-    
         return {
-            uniqueId: data.uniqueId,
-            tokenId: data.tokenId
+            status: "success",
+            data: payload,
+            token: generateToken
         };
     } catch (error) {
         console.log(error.message);
-        return {};
+        return {
+            status: "fail",
+            data: error.message
+        };
+    }
+};
+
+export const verifyToken = async (token) => {
+    try {
+        const {
+            _id,
+            email,
+            firstName,
+            lastName,
+            mobile,
+            createdDate
+        } = await jwt.verify(token, process.env.PUBLIC_KEY, { algorithm: "RS512" });
+        
+        return {
+            status: "success",
+            data: {
+                _id,
+                email,
+                firstName,
+                lastName,
+                mobile,
+                createdDate
+            }
+        };
+    } catch (error) {
+        return {
+            status: "fail",
+            data: error.message
+        };
     }
 };
