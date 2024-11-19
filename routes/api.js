@@ -68,6 +68,7 @@ router.post("/Registration", async (req, res) => {
             ]
         });
     } catch (error) {
+        console.log(error.message);
         const string = error.message.split(" ");
         if (string.includes("duplicate"))
             return res.status(400).json({

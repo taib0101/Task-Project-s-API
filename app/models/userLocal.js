@@ -1,10 +1,11 @@
 import mongoose from "mongoose";
 
+mongoose.set("autoIndex", true);
+
 const schema = new mongoose.Schema({
     email: {
         type: String,
         required: [true, "email didn't input"],
-        unique: [true, "take another value"],
         trim: true
     },
 
@@ -28,19 +29,28 @@ const schema = new mongoose.Schema({
 
     password: {
         type: String,
-        require: [true, "password didn't input"]
+        required: [true, "password didn't input"]
     },
 
     createdDate: {
         type: String,
-        require: [true, "createdDate didn't input"]
+        required: [true, "createdDate didn't input"]
     },
 
     _id: {
         type: String,
-        require: [true, "_id didn't input"]
+        required: [true, "_id didn't input"]
+    },
+
+    index: {
+        type: Date,
+        index: true,
+        unique: true,
+        index: true
     }
 }, { versionKey: false });
+
+schema.index({ email: 1 }, { unique: true, background: true, name: "email" });
 
 const model = new mongoose.model("userLocal", schema);
 export default model;

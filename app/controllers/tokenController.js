@@ -45,6 +45,7 @@ export const createToken = async (reqBody) => {
 
 export const verifyToken = async (token) => {
     try {
+        const verify = await jwt.verify(token, process.env.PUBLIC_KEY, { algorithm: "RS512" });
         const {
             _id,
             email,
@@ -52,8 +53,8 @@ export const verifyToken = async (token) => {
             lastName,
             mobile,
             createdDate
-        } = await jwt.verify(token, process.env.PUBLIC_KEY, { algorithm: "RS512" });
-        
+        } = verify;
+
         return {
             status: "success",
             data: {
@@ -66,6 +67,7 @@ export const verifyToken = async (token) => {
             }
         };
     } catch (error) {
+        console.log("error verify :", error.message);
         return {
             status: "fail",
             data: error.message
