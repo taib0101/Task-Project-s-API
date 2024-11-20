@@ -17,6 +17,7 @@ export const connect = () => {
     try {
         mongoose.connect(URI);
         console.log("conected database");
+        console.log(URI);
     } catch (error) {
         console.log(error.message);
     }
