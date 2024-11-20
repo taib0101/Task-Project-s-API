@@ -40,13 +40,6 @@ const schema = new mongoose.Schema({
     _id: {
         type: String,
         required: [true, "_id didn't input"]
-    },
-
-    index: {
-        type: Date,
-        index: true,
-        unique: true,
-        index: true
     }
 }, { versionKey: false });
 
