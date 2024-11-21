@@ -3,7 +3,7 @@ import express from "express";
 import dotenv from "dotenv";
 import { connect } from "./app/models/connect.js";
 import router from "./routes/api.js"
-// import { readCollection } from "./app/utility/readUserCollections.js";
+import cors from "cors";
 
 // configure environment file
 dotenv.config({ path: "./app/config/.env" });
@@ -12,6 +12,8 @@ dotenv.config({ path: "./app/config/.env" });
 const app = express();
 
 app.set("case sensitive routing", true);
+
+app.use(cors());
 
 // connect database
 connect();
