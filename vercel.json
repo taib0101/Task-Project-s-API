@@ -35,12 +35,5 @@
             "src": "/TaskProject/DeleteTask",
             "dest": "/app.js"
         }
-    ],
-    "functions": {
-        "api/**/*.js": {
-            "regions": [
-                "bom1"
-            ] 
-        }
-    }
+    ]
 }
