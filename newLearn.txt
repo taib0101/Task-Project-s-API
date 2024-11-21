@@ -1,2 +1,4 @@
 1. case sensitive for app and router
-2. unique, index in schema
+2. unique, index in schema for mongoose and mongodb
+3. remove reference of array and object
+4. unique ID by crypto, uuid, nanoid

@@ -10,7 +10,6 @@ export const profileDetails = async (req, res) => {
         if (verifiedToken.status === "fail")
             throw new Error(verifiedToken.data);
 
-        const statusCode = (verifiedToken.status === "success") ? 200 : 401;
         return res.status(200).json({
             status: verifiedToken.status,
             data: verifiedToken.data
