@@ -8,31 +8,7 @@
     ],
     "routes": [
         {
-            "src": "/TaskProject/Login",
-            "dest": "/app.js"
-        },
-        {
-            "src": "/TaskProject/Registration",
-            "dest": "/app.js"
-        },
-        {
-            "src": "/TaskProject/ProfileDetails",
-            "dest": "/app.js"
-        },
-        {
-            "src": "/TaskProject/CreateTask",
-            "dest": "/app.js"
-        },
-        {
-            "src": "/TaskProject/ReadTask",
-            "dest": "/app.js"
-        },
-        {
-            "src": "/TaskProject/UpdateTask",
-            "dest": "/app.js"
-        },
-        {
-            "src": "/TaskProject/DeleteTask",
+            "src": "/.",
             "dest": "/app.js"
         }
     ]
