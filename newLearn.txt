@@ -1,0 +1,2 @@
+1. case sensitive for app and router
+2. unique, index in schema
